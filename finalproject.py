@@ -9,56 +9,42 @@ import tkinter.messagebox as tm
 import random
 import os
 import ast
-import math
-
-# Log-In
-# class LoginFrame(Frame):
-#     def __init__(self, master, data):
-#         super().__init__(master)
-# 
-#         self.label_username = Label(self, text="Username")
-#         self.label_password = Label(self, text="Password")
-# 
-#         self.entry_username = Entry(self)
-#         self.entry_password = Entry(self, show="*")
-# 
-#         self.label_username.grid(row=0, sticky=E)
-#         self.label_password.grid(row=1, sticky=E)
-#         self.entry_username.grid(row=0, column=1)
-#         self.entry_password.grid(row=1, column=1)
-# 
-#         self.checkbox = Checkbutton(self, text="Keep me logged in")
-#         self.checkbox.grid(columnspan=2)
-# 
-#         self.logbtn = Button(self, text="Login", command=self._login_btn_clicked(data))
-#         self.logbtn.grid(columnspan=2)
-# 
-#         self.pack()
-# 
-#     def _login_btn_clicked(self, data):
-#         print("Clicked")
-#         username = self.entry_username.get()
-#         password = self.entry_password.get()
-# 
-#         print(username, password)
-#           print(data.usernames)
-#         
-#         if username == 'Peter' and password == "password":
-#             tm.showinfo("Login info", "Welcome %s" % username)
-#             data.username = username
-#             print(data.username)
-#             data.logIn = True
-#         else:
-#             tm.showerror("Login error", "Incorrect username")
-#             print("hi")
-            
+import math            
 
 ####################################
 # customize these functions
 ####################################
 
-def init(data):
+def saveData(data):
+    file = open("information.txt", "r")
+    data.usernames = file.readline()
+    data.usernames = ast.literal_eval(data.usernames)
+    print(data.usernames)
+    data.usernamePasswords = file.readline()
+    print(data.usernamePasswords)
+    data.usernamePasswords = ast.literal_eval(data.usernamePasswords)
+    print(data.usernamePasswords)
+    # data.terms = file.readline()
+    # data.terms = ast.literal_eval(data.terms)
+    # print(data.terms)
+    # data.termDefs = file.readline()
+    # data.termDefs = ast.literal_eval(data.termDefs)
+    # print(data.termDefs)
+    data.userProgress = file.readline()
+    data.userProgress = ast.literal_eval(data.userProgress)
+    print(data.userProgress)
+    data.userLevels = file.readline()
+    data.userLevels = ast.literal_eval(data.userLevels)
+    print(data.userLevels)
+    data.timeData = file.readline()
+    data.timeData = ast.literal_eval(data.timeData)
+    print(data.timeData, 'g')
+    file.close()
 
+def init(data):
+    data.cx = random.random() * data.width
+    data.cy = 0
+    data.dy = data.height // 10
     data.logIn = False
     data.timerDelay = 1000 # 100 millisecond == 0.1 seconds
     data.timerCalls = 0
@@ -75,19 +61,9 @@ def init(data):
     data.pickThree = random.sample(range(len(data.termDefs)), 3)
     data.showDef = False
     data.clicked = False
-    # 
-    # fileAccounts = open("information.txt”, "r") 
-    # print(fileAccounts)
-    # data.usernames = file.readline()
-    # data.usernamePasswords = file.readline()
     
+    # Save file
     file = open("information.txt", "r")
-    # data.usernames = list(file.readline().split(','))
-    # data.usernames[len(data.usernames) - 1] = data.usernames[len(data.usernames) - 1][:-1]
-    # print(data.usernames)
-    # data.usernamePasswords = list(file.readline().split(','))
-    # data.usernamePasswords[len(data.usernames) - 1] = data.usernamePasswords[len(data.usernames) - 1][:-1]
-    # print(data.usernamePasswords)
     data.usernames = file.readline()
     data.usernames = ast.literal_eval(data.usernames)
     print(data.usernames)
@@ -95,17 +71,38 @@ def init(data):
     print(data.usernamePasswords)
     data.usernamePasswords = ast.literal_eval(data.usernamePasswords)
     print(data.usernamePasswords)
+    # data.terms = file.readline()
+    # data.terms = ast.literal_eval(data.terms)
+    # print(data.terms)
+    # data.termDefs = file.readline()
+    # data.termDefs = ast.literal_eval(data.termDefs)
+    # print(data.termDefs)
+    data.userProgress = file.readline()
+    data.userProgress = ast.literal_eval(data.userProgress)
+    print(data.userProgress)
+    data.userLevels = file.readline()
+    data.userLevels = ast.literal_eval(data.userLevels)
+    print(data.userLevels)
     data.timeData = file.readline()
     data.timeData = ast.literal_eval(data.timeData)
     print(data.timeData, 'g')
     file.close()
-    
-    # data.usernames = "Peter, Esther, John, George"
-    # data.usernamePasswords = "Peter, Esther, John, George"
+
     data.username = 'Peter'
     print(data.username)
-    data.level = 1
-    data.progress = 0
+    
+    data.level = data.userLevels[0]   
+    data.progress = data.userProgress[0]
+    
+    for i in range(len(data.usernames)):
+        if (data.usernames[i] == 'data.username'):
+            data.level = data.userLevels[i]
+            data.progress = data.userProgress[i]
+    
+    # for i in range (len(data.usernames)):
+    #     if (data.usernames[i] == data.username):
+    #         data.progress = data.userProgress[i]
+    #         data.level = data.userLevels[i]
     data.page = 'Home'
     data.fontSize = 0.75 * (data.height // data.rows)
     data.numCorrect = 0
@@ -123,17 +120,6 @@ def init(data):
         data.gameColor1 = "Helvetica %d" % data.fontSize
         data.gameColor2 = "Helvetica %d" % data.fontSize
         data.gameColor3 = "Helvetica %d bold" % data.fontSize
-        
-    # file = open("information.txt", "w")
-    # print(data.usernames)
-    # file.write(str(data.usernames).join(","))
-    # file.write("\n")
-    # file.write(str(data.usernamePasswords).join(","))
-    # file.write("\n")
-    # file.write(str(data.timeData).join(","))
-    # file.close()
-    # 
-    # print("lebron")
     
     data.totalTimeData = []
     data.totalTestTime = []
@@ -231,7 +217,6 @@ def mousePressed(event, data):
             data.gameColor1 = "Helvetica %d" % data.fontSize
             data.gameColor2 = "Helvetica %d bold" % data.fontSize
             data.gameColor3 = "Helvetica %d" % data.fontSize
-
             
     # Button for Test mode
     if (event.x > .6 * data.width and event.x < .85 * data.width and event.y > .15 * data.height and event.y < .35 * data.height and data.page == 'Home'):
@@ -256,39 +241,75 @@ def mousePressed(event, data):
         if (data.progress >= 20):
             data.progress -= 20
             data.level += 1
+            
+        for i in range(len(data.usernames)):
+            if (data.usernames[i] == data.username):
+                data.userLevels[i] = data.level
+                data.userProgress[i] = data.progress
+        
         data.showDef = True
         data.pause = True
         data.clicked = True
         data.timeData.append([data.username, data.gameType, data.timerCalls, data.currentTerm])
         
         file = open("information.txt", "w")
+        print(data.usernames)
         file.write(str(data.usernames))
         file.write("\n")
         file.write(str(data.usernamePasswords))
         file.write("\n")
+        # file.write(str(data.terms))
+        # file.write("\n")
+        # file.write(str(data.termDefs))
+        # file.write("\n")
+        file.write(str(data.userProgress))
+        print(data.userProgress)
+        file.write("\n")
+        file.write(str(data.userLevels))
+        file.write("\n")
+        print(data.userLevels)
+        print(data.timeData)
         file.write(str(data.timeData))
         file.close()
         
         print(data.timeData)
         print('hi')
         print(data.page)
-    # 
+
     # Good    
     if (event.x > (3/7) * data.width and event.x < (4/7) * data.width and event.y > (data.rows - 1) * (data.height // data.rows) and event.y < (data.rows) * (data.height // data.rows) and data.page == "Game" and data.gameType == "Regular" and data.clicked == False):
         if (data.progress >= 20):
             data.progress -= 20
             data.level += 1
         data.progress += 3
+        
+        for i in range(len(data.usernames)):
+            if (data.usernames[i] == data.username):
+                data.userLevels[i] = data.level
+                data.userProgress[i] = data.progress
+        
         data.showDef = True
         data.pause = True
         data.clicked = True
         data.timeData.append([data.username, data.gameType, data.timerCalls, data.currentTerm])
         
         file = open("information.txt", "w")
+        print(data.usernames)
         file.write(str(data.usernames))
         file.write("\n")
         file.write(str(data.usernamePasswords))
         file.write("\n")
+        # file.write(str(data.terms))
+        # file.write("\n")
+        # file.write(str(data.termDefs))
+        # file.write("\n")
+        file.write(str(data.userProgress))
+        print(data.userProgress)
+        file.write("\n")
+        file.write(str(data.userLevels))
+        file.write("\n")
+        print(data.userLevels)
+        print(data.timeData)
         file.write(str(data.timeData))
         file.close()
         
@@ -303,89 +324,151 @@ def mousePressed(event, data):
             data.progress -= 20
             data.level += 1
         data.progress += 5
+        
+        for i in range(len(data.usernames)):
+            if (data.usernames[i] == data.username):
+                data.userLevels[i] = data.level
+                data.userProgress[i] = data.progress
+                
+        print(data.userLevels, 'd')
+        print(data.userProgress, 's')
+        
         data.showDef = True
         data.clicked = True
         data.pause = True
         data.timeData.append([data.username, data.gameType, data.timerCalls, data.currentTerm])
         
         file = open("information.txt", "w")
+        print(data.usernames)
         file.write(str(data.usernames))
         file.write("\n")
         file.write(str(data.usernamePasswords))
         file.write("\n")
+        # file.write(str(data.terms))
+        # file.write("\n")
+        # file.write(str(data.termDefs))
+        # file.write("\n")
+        file.write(str(data.userProgress))
+        print(data.userProgress)
+        file.write("\n")
+        file.write(str(data.userLevels))
+        file.write("\n")
+        print(data.userLevels)
+        print(data.timeData)
         file.write(str(data.timeData))
         file.close()
         
         print(data.timeData)    
         print('hi')
         print(data.page)
+        
+    if (event.x > (2.5/7) * data.width and event.x < (4.5/7) * data.width and event.y > (data.rows - 1) * (data.height // data.rows) and event.y < (data.rows) * (data.height // data.rows) and data.page == "Stats"):
+        
+        file = open("%s.txt" % data.username, "w")
+        
+        file.write(str(data.username))
+        file.write("\n")
+        
+        user_data = []
+        for i in range(len(data.timeData)):
+            if (data.timeData[i][0] == data.username):
+                user_data.append(data.timeData[i])
+        
+        file.write(str(user_data))
+        file.close()
 
 def keyPressed(event, data):
-    if (event.keysym == "q"):
-        data.page = "Optimize"
-    
-    if (data.logIn == False):
+    if (event.keysym == "f"):
+        data.page = "Fall"
         
-        if (event.keysym == 'Up' and data.currentTerm < 
-        len(data.termDefs) - 1 and data.page != 'Test'):
-            data.pickThree = random.sample(range(len(data.termDefs)), 3)
+    if (event.keysym == 'Up' and data.currentTerm < 
+    len(data.termDefs) - 1 and data.page != 'Test'):
+        data.pickThree = random.sample(range(len(data.termDefs)), 3)
+        data.currentTerm += 1
+        data.showDef = False
+        data.pause = False
+        data.clicked = False
+        data.timerCalls = 0
+    if (event.keysym == 'Down' and data.currentTerm > 0 and data.page != 'Test'):
+        data.pause = False
+        data.pickThree = random.sample(range(len(data.termDefs)), 3)
+        data.currentTerm -= 1
+        data.clicked = False
+        data.showDef = False
+        data.timerCalls = 0
+    if (event.keysym == 's'):
+        data.showDef = True
+    if (data.page == 'Test' and (event.keysym == 'a' or event.keysym == 'b' or event.keysym == 'c' or event.keysym == 'd') and data.page == 'Test'):
+        if (event.keysym == 'a' and data.page == 'Test' and data.termDefs[data.pickThree[0]] == data.termDefs[data.currentTerm]):
+            data.progress += 1
+            data.numCorrect += 1
+            # data.pickThree = random.sample(range(len(data.termDefs)), 3)
+            if (data.progress >= 20):
+                data.progress -= 20
+                data.level += 1
+
+        elif (event.keysym == 'b' and data.page == 'Test' and data.termDefs[data.pickThree[1]] == data.termDefs[data.currentTerm]):
+            data.progress += 1
+            data.numCorrect += 1
+            # data.pickThree = random.sample(range(len(data.termDefs)), 3)
+            if (data.progress >= 20):
+                data.progress -= 20
+                data.level += 1
+
+        elif (event.keysym == 'c' and data.page == 'Test' and data.termDefs[data.pickThree[2]] == data.termDefs[data.currentTerm]):
+            data.progress += 1
+            data.numCorrect += 1
+            # data.pickThree = random.sample(range(len(data.termDefs)), 3)
+            if (data.progress >= 20):
+                data.progress -= 20
+                data.level += 1
+
+        elif (event.keysym == 'd' and data.page == 'Test' and data.termDefs[data.pickThree[0]] != data.termDefs[data.currentTerm] and data.termDefs[data.pickThree[1]] != data.termDefs[data.currentTerm] and data.termDefs[data.pickThree[2]] != data.termDefs[data.currentTerm]):
+            data.progress += 1
+            data.numCorrect += 1
+            # data.pickThree = random.sample(range(len(data.termDefs)), 3)
+            if (data.progress >= 20):
+                data.progress -= 20
+                data.level += 1
+
+        if (data.currentTerm < len(data.termDefs) - 1):
             data.currentTerm += 1
-            data.showDef = False
-            data.pause = False
-            data.clicked = False
-            data.timerCalls = 0
-        if (event.keysym == 'Down' and data.currentTerm > 0 and data.page != 'Test'):
-            data.pause = False
             data.pickThree = random.sample(range(len(data.termDefs)), 3)
-            data.currentTerm -= 1
-            data.clicked = False
-            data.showDef = False
-            data.timerCalls = 0
-        if (event.keysym == 's'):
-            data.showDef = True
-        if (data.page == 'Test' and (event.keysym == 'a' or event.keysym == 'b' or event.keysym == 'c' or event.keysym == 'd') and data.page == 'Test'):
-            if (event.keysym == 'a' and data.page == 'Test' and data.termDefs[data.pickThree[0]] == data.termDefs[data.currentTerm]):
-                data.progress += 1
-                data.numCorrect += 1
-                # data.pickThree = random.sample(range(len(data.termDefs)), 3)
-    
-            elif (event.keysym == 'b' and data.page == 'Test' and data.termDefs[data.pickThree[1]] == data.termDefs[data.currentTerm]):
-                data.progress += 1
-                data.numCorrect += 1
-                # data.pickThree = random.sample(range(len(data.termDefs)), 3)
-    
-            elif (event.keysym == 'c' and data.page == 'Test' and data.termDefs[data.pickThree[2]] == data.termDefs[data.currentTerm]):
-                data.progress += 1
-                data.numCorrect += 1
-                # data.pickThree = random.sample(range(len(data.termDefs)), 3)
-    
-            elif (event.keysym == 'd' and data.page == 'Test' and data.termDefs[data.pickThree[0]] != data.termDefs[data.currentTerm] and data.termDefs[data.pickThree[1]] != data.termDefs[data.currentTerm] and data.termDefs[data.pickThree[2]] != data.termDefs[data.currentTerm]):
-                data.progress += 1
-                data.numCorrect += 1
-                # data.pickThree = random.sample(range(len(data.termDefs)), 3)
-    
-            if (data.currentTerm < len(data.termDefs) - 1):
-                data.currentTerm += 1
-                data.pickThree = random.sample(range(len(data.termDefs)), 3)
-            else:
-                data.page = 'Congrats'
-                data.timeData.append([data.username, data.gameType, data.timerCalls, data.numCorrect])
-                
-                file = open("information.txt", "w")
-                file.write(str(data.usernames))
-                file.write("\n")
-                file.write(str(data.usernamePasswords))
-                file.write("\n")
-                file.write(str(data.timeData))
-                file.close()
-                
-                print(data.timeData)
-                data.currentTerm = 0
+        else:
+            data.page = 'Congrats'
+            data.timeData.append([data.username, data.gameType, data.timerCalls, data.numCorrect])
+            
+            file = open("information.txt", "w")
+            print(data.usernames)
+            file.write(str(data.usernames))
+            file.write("\n")
+            file.write(str(data.usernamePasswords))
+            file.write("\n")
+            # file.write(str(data.terms))
+            # file.write("\n")
+            # file.write(str(data.termDefs))
+            # file.write("\n")
+            file.write(str(data.userProgress))
+            print(data.userProgress)
+            file.write("\n")
+            file.write(str(data.userLevels))
+            file.write("\n")
+            print(data.userLevels)
+            print(data.timeData)
+            file.write(str(data.timeData))
+            file.close()
+            
+            print(data.timeData)
+            data.currentTerm = 0
 
 def timerFired(data):
+    # print(data.page)
+    # print(data.pause)
+    
     if ((data.page == 'Game' or data.page == 'Test') and data.pause == False):
         data.timerCalls += 1
-
+        
+    data.cy += data.dy
 
 def redrawAll(canvas, data):
     homeButtonLeft = .85
@@ -423,6 +506,9 @@ def redrawAll(canvas, data):
         
     # User dashboard page (called 'Stats')
     if (data.page == 'Stats'):
+        data.totalTimeData = []
+        data.totalTestTime = []
+        data.totalTestCor = []
         
         for i in range(len(data.timeData)):
             if (data.timeData[i][0] == data.username and data.timeData[i][1] == "Regular"):
@@ -430,9 +516,12 @@ def redrawAll(canvas, data):
             if (data.timeData[i][0] == data.username and data.timeData[i][1] == "Test"):
                 data.totalTestTime.append(data.timeData[i][2])
                 data.totalTestCor.append(data.timeData[i][3])
-        
-        print(len(data.timeData))
                 
+        if (len(data.totalTimeData) == 0 or len(data.totalTestTime) == 0 or
+        len(data.totalTestCor) == 0):
+            canvas.create_text(data.width/2, data.height/2, text= "Need More  Data!", font = "Helvetica %d bold" % (1.5 * data.fontSize))
+            
+        print(len(data.timeData))
         print(data.totalTimeData)
         mean = sum(data.totalTimeData)/len(data.totalTimeData)
         var  = sum(math.pow(x-mean,2) for x in data.totalTimeData) / len(data.totalTimeData)  
@@ -442,6 +531,8 @@ def redrawAll(canvas, data):
         longestIndex = data.totalTimeData.index(max(data.totalTimeData))
         shortestIndex = data.totalTimeData.index(min(data.totalTimeData))
         print(min(data.totalTimeData))
+        
+        print(shortestIndex, 'ddd')
         
         mean_time = sum(data.totalTestTime)/len(data.totalTestTime)
         mean_correct = sum(data.totalTestCor)/len(data.totalTestCor)
@@ -474,18 +565,14 @@ def redrawAll(canvas, data):
             text = "Regular Mode Facts", font = "Helvetica %d bold" % 
             data.fontSize, fill = "blue")   
         canvas.create_text(.5 * data.width, .7 * data.height,
-        text = "Hardest Card: \"%s\" took %d second(s)" % (data.terms[longestIndex],
+        text = "Hardest Card: \"%s\" took %d second(s)" % (data.terms[data.timeData[longestIndex][3]],
         data.totalTimeData[longestIndex]), fill = "red",
         font = "Helvectia %d bold" % data.fontSize)
         
         canvas.create_text(.5 * data.width, .8 * data.height,
-        text = "Easiest Card: \"%s\" took %d second(s)" % (data.terms[shortestIndex],
+        text = "Easiest Card: \"%s\" took %d second(s)" % (data.terms[data.timeData[shortestIndex][3]],
         data.totalTimeData[shortestIndex]), fill = "red",
         font = "Helvectia %d bold" % data.fontSize)
-        
-        
-    
-
         
     if (data.page == 'Test'):
         canvas.create_rectangle((0) * data.width, (data.rows - 1) *
@@ -502,10 +589,10 @@ def redrawAll(canvas, data):
             
         canvas.create_text(data.width // 2, (.25) * data.height, 
             text = data.terms[data.currentTerm], font = "Helvetica 50 bold")
-        if (data.showDef == True):
-            canvas.create_text(data.width // 2, (.65) * data.height, 
-                text = data.termDefs[data.currentTerm], font = "Helvetica 30",
-                width = data.width // 2)
+        # if (data.showDef == True):
+        #     canvas.create_text(data.width // 2, (.65) * data.height, 
+        #         text = data.termDefs[data.currentTerm], font = "Helvetica 30",
+        #         width = data.width // 2)
             
         canvas.create_text(data.width // 2, (0.5/data.rows) * data.height, 
             text = "Card %d/%d" % (data.currentTerm + 1, len(data.terms)), font =  "Helvetica 30")
@@ -620,7 +707,7 @@ def redrawAll(canvas, data):
                 specificCard.append(data.timeData[i][2])
                 
         if (len(specificCard) == 0):
-            canvas.create_text((2.5/7) * data.width, .25 * data.height, text = "You have not answered this question yet.", font = "Helvetica 30 bold")
+            canvas.create_text(0, .25 * data.height, text = "You have not answered this question yet.", font = "Helvetica %d bold" % (.5*data.fontSize), anchor = W, width = data.width//4)
             
         data.totalTimeData = []
         for i in range(len(data.timeData)):
@@ -637,9 +724,9 @@ def redrawAll(canvas, data):
                         side_list.append(data.timeData[j][3])
         
         print(side_list)
+        side_list.reverse()
         print(new_cards)
         print(sorted_all)
-        
         
         canvas.create_rectangle((0) * data.width, (data.rows - 1) *
             (data.height // data.rows), (1/7) * data.width, (data.rows) *
@@ -683,6 +770,19 @@ def redrawAll(canvas, data):
         canvas.create_text(data.width * .9, data.height * .3, text="Time: " +
             str(data.timerCalls), width = data.width // 5, font = 
             "Helvetica %d bold" % data.fontSize)
+            
+    if (data.page == 'Fall'):
+        print(data.terms[data.currentTerm])
+        print(data.termDefs[data.currentTerm])
+        
+        if (data.cy <= data.height * .95):
+            canvas.create_text(data.cx, data.cy, text = 
+                data.termDefs[data.currentTerm], width = data.width // 4, font =        
+                "Helvetica %d bold" % data.fontSize)
+        else:
+            data.currentTerm += 1
+            data.cy = 0
+            data.cx = random.random() * data.width
         
         
     if (data.page == 'Game'):
@@ -693,7 +793,8 @@ def redrawAll(canvas, data):
                 specificCard.append(data.timeData[i][2])
                 
         if (len(specificCard) == 0):
-            canvas.create_text((2.5/7) * data.width, .25 * data.height, text = "You have not answered this question yet.", font = "Helvetica 30 bold")
+            # canvas.create_text((2.5/7) * data.width, .25 * data.height, text = "You have not answered this question yet.", font = "Helvetica 30 bold")
+            pass
             
         sorted_all = sorted(data.totalTimeData)
         
@@ -719,9 +820,6 @@ def redrawAll(canvas, data):
                 total_avg.append(data.timeData[i][2])
             else:
                 continue
-            
-                
-        
                 
         if (len(avg) == 0):
             canvas.create_text(0, 2.5 * data.height//data.rows,
@@ -736,6 +834,7 @@ def redrawAll(canvas, data):
             low = 0
             high = len(sorted_all)
             
+            # Adapted Binary Search
             for i in range(5):
                 mid = int((low + high) / 2)
                 num = sorted_all[mid]
@@ -866,22 +965,35 @@ def run(width=300, height=300):
     def command1():
         if entry1.get() in data.usernames and entry2.get() in data.usernamePasswords: #Checks whether username and password are correct
             data.username = entry1.get()
+            for i in range (len(data.usernames)):
+                if (data.usernames[i] == data.username):
+                    data.progress = data.userProgress[i]
+                    data.level = data.userLevels[i]
+            
         
             root.deiconify() #Unhides the root window
             top.destroy() #Removes the toplevel window
         else:
             data.usernames.append(entry1.get())
             data.usernamePasswords.append(entry2.get())
+            
             file = open("information.txt", "w")
             print(data.usernames)
             file.write(str(data.usernames))
             file.write("\n")
             file.write(str(data.usernamePasswords))
             file.write("\n")
+            data.userProgress.append(0)
+            file.write(str(data.userProgress))
+            print(data.userProgress)
+            file.write("\n")
+            data.userLevels.append(1)
+            file.write(str(data.userLevels))
+            file.write("\n")
+            print(data.userLevels)
             print(data.timeData)
             file.write(str(data.timeData))
             file.close()
-            
             print(data.usernames)
             print(data.usernamePasswords)
 
@@ -889,6 +1001,28 @@ def run(width=300, height=300):
         top.destroy() #Removes the toplevel window
         root.destroy() #Removes the hidden root window
         sys.exit() #Ends the script
+        
+    top3 = Toplevel()
+    entry3 = Entry(top) #Username entry
+    print("Hi")
+    button3 = Button(top, text="Check Word", command=lambda:checkWord()) #Login button
+    entry3.pack() #These pack the elements, this includes the items for the main window
+    button3.pack()
+    
+    def checkWord():
+        if entry1.get() == data.terms[data.currentTerm]:
+            # data.progress += 1
+            data.cy = 0
+            data.currentTerm += 1
+            data.cx = random.random() * data.width
+            print(data.progress)
+            
+            root.deiconify() #Unhides the root window
+            top.destroy() #Removes the toplevel window
+        else:
+            data.currentTerm += 1
+            data.cy = 0
+            data.cx = random.random() * data.width
     
     init(data)
     # create the root and the canvas
