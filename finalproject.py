@@ -723,6 +723,7 @@ def redrawAll(canvas, data):
                     if data.timeData[j][3] not in side_list:
                         side_list.append(data.timeData[j][3])
         
+        side_list.pop()
         print(side_list)
         side_list.reverse()
         print(new_cards)
@@ -756,7 +757,8 @@ def redrawAll(canvas, data):
             (data.height // data.rows), fill = None, width = 2)
         canvas.create_text((6.5/7) * data.width, (2 * data.rows - 1) * .5 *         
             (data.height // data.rows), text = "Next", font = "Helvetica 30 bold")
-            
+        
+        print(data.currentTerm)
         canvas.create_text(data.width // 2, (.25) * data.height, 
             text = data.terms[side_list[data.currentTerm]], font = "Helvetica 50 bold")
         if (data.showDef == True):
