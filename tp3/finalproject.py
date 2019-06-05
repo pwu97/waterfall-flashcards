@@ -779,7 +779,6 @@ def redrawAll(canvas, data):
             # Adapted Binary Search
             for i in range(5):
                 mid = int((low + high) / 2)
-                print(mid)
                 num = sorted_all[mid]
                 
                 if num == target_mean:
